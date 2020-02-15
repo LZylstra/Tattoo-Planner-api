@@ -1,0 +1,2 @@
+TRUNCATE
+  tattoo_users;

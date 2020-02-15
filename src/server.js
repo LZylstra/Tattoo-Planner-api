@@ -1,12 +1,16 @@
-const express = require("express");
-const app = express();
+require("dotenv").config();
 
-const PORT = process.env.PORT || 8000;
+const knex = require("knex");
+const app = require("./app");
+const { PORT, DB_URL } = require("./config");
 
-app.get("/api/*", (req, res) => {
-  res.json({ ok: true });
+const db = knex({
+  client: "pg",
+  connection: process.env.DB_URL
 });
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.set("db", db);
 
-module.exports = { app };
+app.listen(PORT, () => {
+  console.log(`Server listening at http://localhost:${PORT}`);
+});
