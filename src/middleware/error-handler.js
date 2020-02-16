@@ -1,4 +1,4 @@
-function errorHandler(error, req, res, next) {
+let errorHandler = function(error, req, res, next) {
   let response;
   if (NODE_ENV === "production") {
     response = { error: { message: "server error" } };
@@ -8,8 +8,6 @@ function errorHandler(error, req, res, next) {
   }
   res.status(500).json(response);
   next();
-}
-
-module.exports = {
-  errorHandler
 };
+
+module.exports = errorHandler;
