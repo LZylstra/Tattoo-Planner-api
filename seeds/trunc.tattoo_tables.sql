@@ -1,2 +1,4 @@
 TRUNCATE
-  tattoo_users;
+  tattoo_users,
+  clients
+   RESTART IDENTITY CASCADE;
