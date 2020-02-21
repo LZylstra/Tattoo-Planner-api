@@ -4,3 +4,7 @@ CREATE TABLE tattoo_users (
   full_name TEXT NOT NULL,
   password TEXT NOT NULL
 );
+
+ALTER TABLE clients
+  ADD COLUMN
+    artist INTEGER REFERENCES tattoo_users(id) ON DELETE SET NULL;
