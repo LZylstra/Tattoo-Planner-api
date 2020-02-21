@@ -34,7 +34,7 @@ ClientsRouter.route("/")
       logger.error(`Client's full name is required`);
       return res.status(400).send(`'full_name' is required`);
     }
-    console.log(client_rating);
+
     if (client_rating !== undefined) {
       if (
         !Number.isInteger(client_rating) ||
@@ -74,7 +74,7 @@ ClientsRouter.route("/artist/:id")
     ClientsService.getByArtistId(req.app.get("db"), id)
       .then(clients => {
         if (!clients) {
-          logger.error(`Client with id ${id} not found.`);
+          logger.error(`Client with Artist id ${id} not found.`);
           return res.status(404).json({
             error: { message: `Client not found` }
           });

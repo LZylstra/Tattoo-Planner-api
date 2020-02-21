@@ -15,4 +15,15 @@ VALUES
 ('Gabriel Bellamy', '123-424-7670', 'purpleunicorn@hotmail.com', 2, 1),
 ('Sarah Smith', '223-425-7170', 'superduper@yamjam.com', 8, 2)
 ;
+
+INSERT INTO tattoos (title, position, info, curr_status, tattoo_rating, client)
+VALUES
+('Butterfly', 'Shoulder', 'A monarch butterfly with geometric shapes around it', 'Planning', 6, 4),
+('Dragon', 'Upper Back', 'A large eastern style dragon', 'In Progress', 8, 1),
+('Dog Portrait', 'Thigh', 'A portrait of his dog a poodle mix', 'Planning', 2, 3),
+('Tribal Band', 'Upper Arm', null, 'Planning', 4, 2),
+('Sunflower', 'Wrist', 'A sunflower with the words you are my sunshine', 'Completed', 1, 4),
+('Words', 'Ankle', 'Live Laugh Love', 'Completed', 1, 4)
+
+;
  COMMIT;
