@@ -24,7 +24,7 @@ const ClientsService = {
     return db
       .from("clients")
       .select("*")
-      .where("id", id)
+      .where("clients.id", id)
       .first();
   },
   insertClient(db, newClient) {
