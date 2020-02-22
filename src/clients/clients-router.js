@@ -17,9 +17,19 @@ const serializeClient = client => ({
   artist: client.artist
 });
 
+const serializeClientsTattoo = tattoo => ({
+  id: tattoo.id,
+  title: xss(tattoo.title),
+  position: xss(tattoo.position),
+  info: xss(tattoo.info),
+  curr_status: tattoo.curr_status,
+  tattoo_rating: Number(tattoo.tattoo_rating),
+  client: tattoo.client
+});
+
 //not sure i need this route might delete it later when auth implemented fully
 ClientsRouter.route("/")
-  // .all(requireAuth)
+  //  .all(requireAuth)
   .get((req, res, next) => {
     ClientsService.getAllClients(req.app.get("db"))
       .then(clients => {
@@ -68,7 +78,7 @@ ClientsRouter.route("/")
 
 //gets all clients for a particular artist id
 ClientsRouter.route("/artist/:id")
-  // .all(requireAuth)
+  //  .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
     ClientsService.getByArtistId(req.app.get("db"), id)
@@ -85,6 +95,7 @@ ClientsRouter.route("/artist/:id")
   });
 
 ClientsRouter.route("/:id")
+  //  .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
     ClientsService.getById(req.app.get("db"), id)
@@ -108,5 +119,36 @@ ClientsRouter.route("/:id")
       })
       .catch(next);
   });
+
+ClientsRouter.route("/:id/tattoos")
+  // .all(requireAuth)
+  .all(checkClientExists)
+  .get((req, res, next) => {
+    ClientsService.getClientsTattoos(req.app.get("db"), req.params.id)
+      .then(tattoos => {
+        res.json(ClientsService.serializeClientsTattoos(tattoos));
+      })
+      .catch(next);
+  });
+
+/* async/await syntax for promises */
+async function checkClientExists(req, res, next) {
+  try {
+    const client = await ClientsService.getById(
+      req.app.get("db"),
+      req.params.id
+    );
+
+    if (!client)
+      return res.status(404).json({
+        error: `Client doesn't exist`
+      });
+
+    res.client = client;
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
 
 module.exports = ClientsRouter;

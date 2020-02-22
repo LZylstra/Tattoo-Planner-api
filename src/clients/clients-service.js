@@ -1,3 +1,5 @@
+const xss = require("xss");
+
 const ClientsService = {
   //might remove this later after get auth working better
   getAllClients(db) {
@@ -43,12 +45,56 @@ const ClientsService = {
     return db("clients")
       .where({ id })
       .update(newClientFields);
+  },
+  getClientsTattoos(db, client_id) {
+    return (
+      db
+        .from("tattoos as t")
+        .select(
+          "t.id",
+          "t.title",
+          "t.position",
+          "t.info",
+          "t.curr_status",
+          "t.tattoo_rating",
+          "t.client"
+          //  ...clientFields,
+        )
+        .where("t.client", client_id)
+        // .leftJoin('clients AS c', 't.client', 'c.artist')
+        .groupBy("t.id")
+    );
+  },
+
+  serializeClientsTattoos(tattoos) {
+    return tattoos.map(this.serializeClientsTattoo);
+  },
+
+  serializeClientsTattoo(tattoo) {
+    return {
+      id: tattoo.id,
+      title: xss(tattoo.title),
+      position: xss(tattoo.position),
+      info: xss(tattoo.info),
+      curr_status: tattoo.curr_status,
+      tattoo_rating: Number(tattoo.tattoo_rating),
+      client: tattoo.client
+    };
   }
 };
 const userFields = [
   "usr.id AS user:id",
   "usr.user_name AS user:user_name",
   "usr.full_name AS user:full_name"
+];
+
+const clientFields = [
+  "c.id AS client:id",
+  "c.full_name AS Client:full_name",
+  "c.phone AS client:phone",
+  "c.email AS client:email",
+  "c.client_rating AS client:client_rating",
+  "c.artist AS client:artist"
 ];
 
 module.exports = ClientsService;

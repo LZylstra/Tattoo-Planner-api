@@ -19,6 +19,22 @@ const TattoosService = {
       .leftJoin("clients AS c", "t.client", "c.id")
       .where("c.id", id);
   },
+  // getByClientandId(db, cid, id){
+  //   return db
+  //   .from("tattoos AS t")
+  //   .select(
+  //     "t.id",
+  //     "t.title",
+  //     "t.position",
+  //     "t.info",
+  //     "t.curr_status",
+  //     "t.tattoo_rating",
+  //     "t.client",
+  //     ...clientFields
+  //   )
+  //   .leftJoin("clients AS c", "t.client", "c.id")
+  //   .where("c.id", id).orWhere("usr.id", cid);
+  // },
   getById(db, id) {
     return db
       .from("tattoos")
