@@ -26,7 +26,7 @@ const serializeClient = client => ({
   client_rating: Number(client.client_rating),
   artist: client.artist
 });
-//not sure i need this route might delete it later when auth implemented fully
+
 TattoosRouter.route("/")
   // .all(requireAuth)
   .get((req, res, next) => {

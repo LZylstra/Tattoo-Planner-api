@@ -1,4 +1,4 @@
-CREATE TYPE status_options AS ENUM ('Planning', 'Completed', 'In Progress');
+CREATE TYPE status_options AS ENUM ('New', 'Planning', 'Completed', 'In Progress');
 
 CREATE TABLE tattoos (
      id SERIAL PRIMARY KEY,
