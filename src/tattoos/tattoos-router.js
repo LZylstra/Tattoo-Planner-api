@@ -18,6 +18,14 @@ const serializeTattoo = tattoo => ({
   client: tattoo.client
 });
 
+const serializeClient = client => ({
+  id: client.id,
+  full_name: xss(client.full_name),
+  phone: xss(client.phone),
+  email: xss(client.email),
+  client_rating: Number(client.client_rating),
+  artist: client.artist
+});
 //not sure i need this route might delete it later when auth implemented fully
 TattoosRouter.route("/")
   // .all(requireAuth)
@@ -115,5 +123,20 @@ TattoosRouter.route("/:id")
       })
       .catch(next);
   });
+
+TattoosRouter.route("/:id/client").get((req, res, next) => {
+  const { id } = req.params;
+  TattoosService.getClientByTattooId(req.app.get("db"), id)
+    .then(client => {
+      if (!client) {
+        logger.error(`Tattoo with id ${id} not found.`);
+        return res.status(404).json({
+          error: { message: `Tattoo Not Found` }
+        });
+      }
+      res.json(serializeClient(client));
+    })
+    .catch(next);
+});
 
 module.exports = TattoosRouter;

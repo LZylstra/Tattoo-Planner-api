@@ -122,7 +122,7 @@ ClientsRouter.route("/:id")
 
 ClientsRouter.route("/:id/tattoos")
   // .all(requireAuth)
-  .all(checkClientExists)
+  // .all(checkClientExists)
   .get((req, res, next) => {
     ClientsService.getClientsTattoos(req.app.get("db"), req.params.id)
       .then(tattoos => {

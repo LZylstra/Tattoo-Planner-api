@@ -19,22 +19,38 @@ const TattoosService = {
       .leftJoin("clients AS c", "t.client", "c.id")
       .where("c.id", id);
   },
-  // getByClientandId(db, cid, id){
+  // getByClientandId(db, id) {
   //   return db
-  //   .from("tattoos AS t")
-  //   .select(
-  //     "t.id",
-  //     "t.title",
-  //     "t.position",
-  //     "t.info",
-  //     "t.curr_status",
-  //     "t.tattoo_rating",
-  //     "t.client",
-  //     ...clientFields
-  //   )
-  //   .leftJoin("clients AS c", "t.client", "c.id")
-  //   .where("c.id", id).orWhere("usr.id", cid);
+  //     .from("tattoos AS t")
+  //     .select(
+  //       "t.id",
+  //       "t.title",
+  //       "t.position",
+  //       "t.info",
+  //       "t.curr_status",
+  //       "t.tattoo_rating",
+  //       "t.client",
+  //       ...clientFields
+  //     )
+  //     .leftJoin("clients AS c", "t.client", "c.id")
+  //     .where("t.id", id);
   // },
+  getClientByTattooId(db, tattoo_id) {
+    return db
+      .from("clients AS c")
+      .select(
+        "c.id",
+        "c.full_name",
+        "c.phone",
+        "c.email",
+        "c.client_rating",
+        "c.artist",
+        ...tattooFields
+      )
+      .leftJoin("tattoos AS t", "t.client", "c.id")
+      .where("t.id", tattoo_id)
+      .first();
+  },
   getById(db, id) {
     return db
       .from("tattoos")
@@ -61,6 +77,10 @@ const TattoosService = {
       .where({ id })
       .update(newTattooFields);
   }
+  // getClients(db, cid){
+  //   return db('tattoos')
+  //   .
+  // }
 };
 const clientFields = [
   "c.id AS clients:id",
@@ -69,6 +89,16 @@ const clientFields = [
   "c.email AS clients:email",
   "c.client_rating AS clients:clients_rating",
   "c.artist AS clients:artist"
+];
+
+const tattooFields = [
+  "t.id AS tattoo:id",
+  "t.title AS tattoo:title",
+  "t.position AS tattoo:position",
+  "t.info AS tattoo:info",
+  "t.curr_status AS tattoo:curr_status",
+  "t.tattoo_rating AS tattoo:tattoo_rating",
+  "t.client AS tattoo:client"
 ];
 
 module.exports = TattoosService;
