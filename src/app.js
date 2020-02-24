@@ -7,6 +7,7 @@ const { NODE_ENV } = require("./config");
 const authRouter = require("./auth/auth-router");
 const usersRouter = require("./users/users-router");
 const clientsRouter = require("./clients/clients-router");
+const eventsRouter = require("./events/events-router");
 const tattoosRouter = require("./tattoos/tattoos-router");
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(morgan(morganOption));
 app.use(cors());
 app.use(helmet());
 
+app.use("/api/events", eventsRouter);
 app.use("/api/tattoos", tattoosRouter);
 app.use("/api/clients", clientsRouter);
 app.use("/api/auth", authRouter);

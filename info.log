@@ -10,3 +10,5 @@
 {"message":"Invalid rating '5' supplied","level":"error"}
 {"message":"Invalid rating '5' supplied","level":"error"}
 {"message":"Invalid rating '31' supplied","level":"error"}
+{"message":"Invalid rating 'null' supplied","level":"error"}
+{"message":"Client's full name is required","level":"error"}

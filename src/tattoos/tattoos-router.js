@@ -53,6 +53,7 @@ TattoosRouter.route("/")
       tattoo_rating,
       client
     };
+    //console.log(newTattoo);
     const required = { title, curr_status, client };
     for (const [key, value] of Object.entries(required))
       if (value == null)

@@ -10,10 +10,10 @@ VALUES
 
 INSERT INTO clients (full_name, phone, email, client_rating, artist)
 VALUES
-('Bob Jones', '425-123-9078', 'plaidbeard@gmail.com', 10, 1),
-('Janice Bigby', '123-456-7890', 'jbigby@hotmail.com', 5, 2),
+('Bob Jones', '425-123-9078', 'plaidbeard@gmail.com', 3, 1),
+('Janice Bigby', '123-456-7890', 'jbigby@hotmail.com', 4, 2),
 ('Gabriel Bellamy', '123-424-7670', 'purpleunicorn@hotmail.com', 2, 1),
-('Sarah Smith', '223-425-7170', 'superduper@yamjam.com', 8, 2)
+('Sarah Smith', '223-425-7170', 'superduper@yamjam.com', 5, 2)
 ;
 
 INSERT INTO tattoos (title, position, info, curr_status, tattoo_rating, client)
@@ -25,5 +25,13 @@ VALUES
 ('Sunflower', 'Wrist', 'A sunflower with the words you are my sunshine', 'Completed', 1, 4),
 ('Words', 'Ankle', 'Live Laugh Love', 'Completed', 1, 4)
 
+;
+
+INSERT INTO events(title, description, eventDate, start_time, end_time, in_person, curr_status, all_day, tattoo)
+VALUES
+('Consultation', 'Initial meeting to discuss specifics and plan next steps', '2020-03-04', '12:00:00', '12:30:00', 'true', 'Next', 'false', 1),
+('Drawing Consultation', 'Send by email options', '2020-03-08', null, null, 'false', 'Upcoming', 'true', 1),
+('Tattoo Appointment', 'Start line work and shading', '2020-03-11', '13:30:00', '15:00:00', 'true', 'Upcoming', 'false', 1),
+('Tattoo Appointment', 'finish shading and color', '2020-03-06', '15:00:00', '18:00:00', 'true', 'Next', 'false', 2)
 ;
  COMMIT;
