@@ -1,3 +1,3 @@
 DROP TABLE IF EXISTS events;
 
-DROP TYPE IF EXISTS status_options;
+DROP TYPE IF EXISTS tattoo_status;

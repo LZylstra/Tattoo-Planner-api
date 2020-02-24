@@ -4,7 +4,7 @@ CREATE TABLE events (
      id SERIAL PRIMARY KEY,
      title TEXT NOT NULL,
      description TEXT,
-     eventDate DATE NOT NULL,
+     eventDate TIMESTAMP NOT NULL,
      start_time TIME,
      end_time TIME ,
      in_person BOOLEAN,
