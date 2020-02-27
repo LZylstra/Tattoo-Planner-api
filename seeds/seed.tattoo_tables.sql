@@ -18,10 +18,10 @@ VALUES
 
 INSERT INTO tattoos (title, position, info, curr_status, tattoo_rating, client)
 VALUES
-('Butterfly', 'Shoulder', 'A monarch butterfly with geometric shapes around it', 'Planning', 6, 4),
-('Dragon', 'Upper Back', 'A large eastern style dragon', 'In Progress', 8, 1),
+('Butterfly', 'Shoulder', 'A monarch butterfly with geometric shapes around it', 'Planning', 4, 4),
+('Dragon', 'Upper Back', 'A large eastern style dragon', 'In Progress', 5, 1),
 ('Dog Portrait', 'Thigh', 'A portrait of his dog a poodle mix', 'Planning', 2, 3),
-('Tribal Band', 'Upper Arm', null, 'Planning', 4, 2),
+('Tribal Band', 'Upper Arm', null, 'Planning', 2, 2),
 ('Sunflower', 'Wrist', 'A sunflower with the words you are my sunshine', 'Completed', 1, 4),
 ('Words', 'Ankle', 'Live Laugh Love', 'Completed', 1, 4)
 

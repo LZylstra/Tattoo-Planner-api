@@ -86,7 +86,7 @@ EventsRouter.route("/")
         res
           .status(201)
           .location(`/`)
-          .json(serializeTattoo(event));
+          .json(serializeEvent(event));
       })
       .catch(next);
   });
