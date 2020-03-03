@@ -29,7 +29,7 @@ const serializeClientsTattoo = tattoo => ({
 
 //not sure i need this route might delete it later when auth implemented fully
 ClientsRouter.route("/")
-  //  .all(requireAuth)
+  //.all(requireAuth)
   .get((req, res, next) => {
     ClientsService.getAllClients(req.app.get("db"))
       .then(clients => {
@@ -61,7 +61,7 @@ ClientsRouter.route("/")
     check("phone").isMobilePhone();
 
     const errors = validationResult(req);
-    console.log(errors);
+    //console.log(errors);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
@@ -77,14 +77,14 @@ ClientsRouter.route("/")
   });
 
 //gets all clients for a particular artist id
-ClientsRouter.route("/artist/:id")
-  //  .all(requireAuth)
+ClientsRouter.route("/artist/:artistId/")
+  //.all(requireAuth)
   .get((req, res, next) => {
-    const { id } = req.params;
-    ClientsService.getByArtistId(req.app.get("db"), id)
+    const { artistId } = req.params;
+    ClientsService.getByArtistId(req.app.get("db"), artistId)
       .then(clients => {
         if (!clients) {
-          logger.error(`Client with Artist id ${id} not found.`);
+          logger.error(`Client with Artist id ${artistId} not found.`);
           return res.status(404).json({
             error: { message: `Client not found` }
           });
@@ -95,7 +95,7 @@ ClientsRouter.route("/artist/:id")
   });
 
 ClientsRouter.route("/:id")
-  //  .all(requireAuth)
+  //.all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
     ClientsService.getById(req.app.get("db"), id)
@@ -121,7 +121,7 @@ ClientsRouter.route("/:id")
   });
 
 ClientsRouter.route("/:id/tattoos")
-  // .all(requireAuth)
+  //.all(requireAuth)
   // .all(checkClientExists)
   .get((req, res, next) => {
     ClientsService.getClientsTattoos(req.app.get("db"), req.params.id)

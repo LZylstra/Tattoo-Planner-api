@@ -32,7 +32,7 @@ const serializeEvent = event => ({
 });
 
 EventsRouter.route("/")
-  // .all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
     EventsService.getAllEvents(req.app.get("db"))
       .then(events => {
@@ -92,6 +92,7 @@ EventsRouter.route("/")
   });
 
 EventsRouter.route("/:id")
+  .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
     EventsService.getById(req.app.get("db"), id)
@@ -117,35 +118,39 @@ EventsRouter.route("/:id")
   });
 
 // Get the tattoo that links to given Event id
-EventsRouter.route("/:id/tattoo").get((req, res, next) => {
-  const { id } = req.params;
-  EventsService.getTattoobyEventId(req.app.get("db"), id)
-    .then(tattoo => {
-      if (!tattoo) {
-        logger.error(`Tattoo with Event id ${id} not found.`);
-        return res.status(404).json({
-          error: { message: `Tattoo Event Not Found` }
-        });
-      }
-      res.json(serializeTattoo(tattoo));
-    })
-    .catch(next);
-});
+EventsRouter.route("/:id/tattoo")
+  .all(requireAuth)
+  .get((req, res, next) => {
+    const { id } = req.params;
+    EventsService.getTattoobyEventId(req.app.get("db"), id)
+      .then(tattoo => {
+        if (!tattoo) {
+          logger.error(`Tattoo with Event id ${id} not found.`);
+          return res.status(404).json({
+            error: { message: `Tattoo Event Not Found` }
+          });
+        }
+        res.json(serializeTattoo(tattoo));
+      })
+      .catch(next);
+  });
 
 // Get a list of events for a particular tattoo
-EventsRouter.route("/tattoo/:id").get((req, res, next) => {
-  const { id } = req.params;
-  EventsService.getEventsByTattoo(req.app.get("db"), id)
-    .then(events => {
-      if (!events) {
-        logger.error(`Events for tattoo id ${id} not found.`);
-        return res.status(404).json({
-          error: { message: `Events For Tattoo Not Found` }
-        });
-      }
-      res.json(events.map(serializeEvent));
-    })
-    .catch(next);
-});
+EventsRouter.route("/tattoo/:id")
+  .all(requireAuth)
+  .get((req, res, next) => {
+    const { id } = req.params;
+    EventsService.getEventsByTattoo(req.app.get("db"), id)
+      .then(events => {
+        if (!events) {
+          logger.error(`Events for tattoo id ${id} not found.`);
+          return res.status(404).json({
+            error: { message: `Events For Tattoo Not Found` }
+          });
+        }
+        res.json(events.map(serializeEvent));
+      })
+      .catch(next);
+  });
 
 module.exports = EventsRouter;

@@ -3,6 +3,12 @@ const xss = require("xss");
 const bcrypt = require("bcryptjs");
 
 const UsersService = {
+  getUserId(db, user) {
+    return db
+      .from("tattoo_users AS usr")
+      .select("usr.id", "usr.user_name", "usr.full_name")
+      .where("usr.user_name", user);
+  },
   hasUserWithUserName(db, user_name) {
     return db("tattoo_users")
       .where({ user_name })

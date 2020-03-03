@@ -28,7 +28,7 @@ const serializeClient = client => ({
 });
 
 TattoosRouter.route("/")
-  // .all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
     TattoosService.getAllTattoos(req.app.get("db"))
       .then(tattoos => {
@@ -53,7 +53,7 @@ TattoosRouter.route("/")
       tattoo_rating,
       client
     };
-    //console.log(newTattoo);
+
     const required = { title, curr_status, client };
     for (const [key, value] of Object.entries(required))
       if (value == null)
@@ -84,7 +84,7 @@ TattoosRouter.route("/")
 
 //gets all tattoos for a particular client id
 TattoosRouter.route("/client/:id")
-  // .all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
     TattoosService.getByClientId(req.app.get("db"), id)
@@ -101,6 +101,7 @@ TattoosRouter.route("/client/:id")
   });
 
 TattoosRouter.route("/:id")
+  .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
     TattoosService.getById(req.app.get("db"), id)
@@ -125,19 +126,21 @@ TattoosRouter.route("/:id")
       .catch(next);
   });
 
-TattoosRouter.route("/:id/client").get((req, res, next) => {
-  const { id } = req.params;
-  TattoosService.getClientByTattooId(req.app.get("db"), id)
-    .then(client => {
-      if (!client) {
-        logger.error(`Tattoo with id ${id} not found.`);
-        return res.status(404).json({
-          error: { message: `Tattoo Not Found` }
-        });
-      }
-      res.json(serializeClient(client));
-    })
-    .catch(next);
-});
+TattoosRouter.route("/:id/client")
+  .all(requireAuth)
+  .get((req, res, next) => {
+    const { id } = req.params;
+    TattoosService.getClientByTattooId(req.app.get("db"), id)
+      .then(client => {
+        if (!client) {
+          logger.error(`Tattoo with id ${id} not found.`);
+          return res.status(404).json({
+            error: { message: `Tattoo Not Found` }
+          });
+        }
+        res.json(serializeClient(client));
+      })
+      .catch(next);
+  });
 
 module.exports = TattoosRouter;
