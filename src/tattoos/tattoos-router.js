@@ -28,7 +28,7 @@ const serializeClient = client => ({
 });
 
 TattoosRouter.route("/")
-  .all(requireAuth)
+  //.all(requireAuth)
   .get((req, res, next) => {
     TattoosService.getAllTattoos(req.app.get("db"))
       .then(tattoos => {

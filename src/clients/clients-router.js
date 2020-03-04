@@ -1,3 +1,5 @@
+const EMAIL_CHECK = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+const PHONE_CHECK = /^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
 const express = require("express");
 const logger = require("../middleware/logger");
 const xss = require("xss");
@@ -38,8 +40,8 @@ ClientsRouter.route("/")
       .catch(next);
   })
   .post(bodyParser, (req, res, next) => {
-    const { full_name, phone, email, client_rating } = req.body;
-    const newClient = { full_name, phone, email, client_rating };
+    const { full_name, phone, email, client_rating, artist } = req.body;
+    const newClient = { full_name, phone, email, client_rating, artist };
     if (!req.body.full_name) {
       logger.error(`Client's full name is required`);
       return res.status(400).send(`'full_name' is required`);
@@ -57,8 +59,19 @@ ClientsRouter.route("/")
           .send(`'client_rating' must be a number between 0 and 5`);
       }
     }
-    check("email").isEmail();
-    check("phone").isMobilePhone();
+    if (!EMAIL_CHECK.test(email)) {
+      logger.error(`Invalid email supplied`);
+      return res.status(400).json({
+        error: { message: `Not a valid email` }
+      });
+    }
+
+    if (!PHONE_CHECK.test(phone)) {
+      logger.error(`Invalid phone number supplied`);
+      return res.status(400).json({
+        error: { message: `Not a valid phone number` }
+      });
+    }
 
     const errors = validationResult(req);
     //console.log(errors);
