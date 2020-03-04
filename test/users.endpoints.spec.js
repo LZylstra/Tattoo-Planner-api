@@ -132,42 +132,21 @@ describe.only("Users Endpoints", function() {
               .send(newUser)
               .expect(201)
               .expect(res => {
-                expect(res.body.user).to.have.property("id");
-                expect(res.body.user).to.have.property("full_name");
-                expect(res.body.user).to.have.property("user_name");
+                expect(res.body).to.have.property("user");
                 expect(res.body).to.have.property("authToken");
-                //expect(res.body.authToken).to.eql(jwt);
-                //expect(res.body.full_name).to.eql(newUser.full_name);
-                // expect(res.body.nickname).to.eql("");
-                expect(res.body).to.not.have.property("password");
-                // expect(res.headers.location).to.eql(
-                //   `/api/users/${res.body.id}`
-                // );
-                // const expectedDate = new Date().toLocaleString("en", {
-                //   timeZone: "UTC"
-                // });
-                // const actualDate = new Date(
-                //   res.body.date_created
-                // ).toLocaleString();
-                // expect(actualDate).to.eql(expectedDate);
+                expect(res.body.user.full_name).to.eql(newUser.full_name);
+                expect(res.body.user.user_name).to.eql(newUser.user_name);
+                expect(res.body.user).to.not.have.property("password");
               })
               .expect(res =>
                 db
                   .from("tattoo_users")
                   .select("*")
-                  .where({ id: res.body.id })
+                  .where({ id: res.body.user.id })
                   .first()
                   .then(row => {
                     expect(row.user_name).to.eql(newUser.user_name);
                     expect(row.full_name).to.eql(newUser.full_name);
-                    // expect(row.nickname).to.eql(null);
-                    // const expectedDate = new Date().toLocaleString("en", {
-                    //   timeZone: "UTC"
-                    // });
-                    // const actualDate = new Date(
-                    //   row.date_created
-                    // ).toLocaleString();
-                    // expect(actualDate).to.eql(expectedDate);
                     return bcrypt.compare(newUser.password, row.password);
                   })
                   .then(compareMatch => {
