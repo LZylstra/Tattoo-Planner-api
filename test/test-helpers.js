@@ -7,132 +7,133 @@ function makeUsersArray() {
       id: 1,
       user_name: "test-user-1",
       full_name: "Test user 1",
-      // nickname: "TU1",
       password: "password"
-      // date_created: new Date("2029-01-22T16:28:32.615Z")
     },
     {
       id: 2,
       user_name: "test-user-2",
       full_name: "Test user 2",
-      // nickname: "TU2",
       password: "password"
-      //  date_created: new Date("2029-01-22T16:28:32.615Z")
     },
     {
       id: 3,
       user_name: "test-user-3",
       full_name: "Test user 3",
-      // nickname: "TU3",
       password: "password"
-      //  date_created: new Date("2029-01-22T16:28:32.615Z")
     },
     {
       id: 4,
       user_name: "test-user-4",
       full_name: "Test user 4",
-      // nickname: "TU4",
       password: "password"
-      // date_created: new Date("2029-01-22T16:28:32.615Z")
     }
   ];
 }
 
-// function makeArticlesArray(users) {
-//   return [
-//     {
-//       id: 1,
-//       title: "First test post!",
-//       style: "How-to",
-//       author_id: users[0].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z"),
-//       content:
-//         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?"
-//     },
-//     {
-//       id: 2,
-//       title: "Second test post!",
-//       style: "Interview",
-//       author_id: users[1].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z"),
-//       content:
-//         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?"
-//     },
-//     {
-//       id: 3,
-//       title: "Third test post!",
-//       style: "News",
-//       author_id: users[2].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z"),
-//       content:
-//         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?"
-//     },
-//     {
-//       id: 4,
-//       title: "Fourth test post!",
-//       style: "Listicle",
-//       author_id: users[3].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z"),
-//       content:
-//         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?"
-//     }
-//   ];
-// }
+function makeTattoosArray(clients) {
+  return [
+    {
+      id: 1,
+      title: "First test tattoo",
+      position: "Arm",
+      info:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt",
+      curr_status: "In Progress",
+      tattoo_rating: 3,
+      client: clients[0].id
+    },
+    {
+      id: 2,
+      title: "Second test tattoo",
+      position: "Neck",
+      info:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt",
+      curr_status: "Completed",
+      tattoo_rating: 5,
+      client: clients[1].id
+    },
+    {
+      id: 3,
+      title: "Third test tattoo",
+      position: "Chest",
+      info:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt",
+      curr_status: "New",
+      tattoo_rating: 2,
+      client: clients[2].id
+    }
+  ];
+}
+function makeClientsArray(artists) {
+  return [
+    {
+      id: 1,
+      full_name: "Test Name",
+      phone: "123-456-7890",
+      email: "email@email.com",
+      client_rating: 2,
+      artist: artists[0].id
+    },
+    {
+      id: 2,
+      full_name: "Test Name2",
+      phone: "123-456-7890",
+      email: "email@email.com",
+      client_rating: 3,
+      artist: artists[1].id
+    },
+    {
+      id: 3,
+      full_name: "Test Name3",
+      phone: "123-456-7890",
+      email: "email@email.com",
+      client_rating: 5,
+      artist: artists[2].id
+    }
+  ];
+}
 
-// function makeCommentsArray(users, articles) {
-//   return [
-//     {
-//       id: 1,
-//       text: "First test comment!",
-//       article_id: articles[0].id,
-//       user_id: users[0].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z")
-//     },
-//     {
-//       id: 2,
-//       text: "Second test comment!",
-//       article_id: articles[0].id,
-//       user_id: users[1].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z")
-//     },
-//     {
-//       id: 3,
-//       text: "Third test comment!",
-//       article_id: articles[0].id,
-//       user_id: users[2].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z")
-//     },
-//     {
-//       id: 4,
-//       text: "Fourth test comment!",
-//       article_id: articles[0].id,
-//       user_id: users[3].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z")
-//     },
-//     {
-//       id: 5,
-//       text: "Fifth test comment!",
-//       article_id: articles[articles.length - 1].id,
-//       user_id: users[0].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z")
-//     },
-//     {
-//       id: 6,
-//       text: "Sixth test comment!",
-//       article_id: articles[articles.length - 1].id,
-//       user_id: users[2].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z")
-//     },
-//     {
-//       id: 7,
-//       text: "Seventh test comment!",
-//       article_id: articles[3].id,
-//       user_id: users[0].id,
-//       date_created: new Date("2029-01-22T16:28:32.615Z")
-//     }
-//   ];
-// }
-
+function makeEventsArray(tattoos) {
+  return [
+    {
+      id: 1,
+      title: "Event1",
+      description: "test description",
+      eventdate: new Date("2029-01-22T16:28:32.615Z"),
+      start_time: "12:34:00",
+      end_time: "01:32:00",
+      in_person: true,
+      curr_status: "Upcoming",
+      all_day: false,
+      tattoo: tattoos[0].id
+    },
+    {
+      id: 2,
+      title: "Event2",
+      description: "test description",
+      eventdate: new Date("2029-01-22T16:28:32.615Z"),
+      start_time: "12:34:00",
+      end_time: "01:32:00",
+      in_person: true,
+      curr_status: "Upcoming",
+      all_day: false,
+      tattoo: tattoos[1].id
+    },
+    {
+      id: 2,
+      title: "Event2",
+      description: "test description",
+      eventdate: new Date("2029-01-22T16:28:32.615Z"),
+      start_time: "12:34:00",
+      end_time: "01:32:00",
+      in_person: true,
+      curr_status: "Upcoming",
+      all_day: false,
+      tattoo: tattoos[2].id
+    }
+  ];
+}
+function makeExpectedClient() {}
 // function makeExpectedArticle(users, article, comments = []) {
 //   const author = users.find(user => user.id === article.author_id);
 
@@ -204,48 +205,37 @@ function makeUsersArray() {
 
 function makeTattoosFixtures() {
   const testUsers = makeUsersArray();
-  // const testArticles = makeArticlesArray(testUsers);
+  const testClients = makeClientsArray(testUsers);
+  const testTattoos = makeTattoosArray(testClients);
+  const testEvents = makeEventsArray(testTattoos);
   // const testComments = makeCommentsArray(testUsers, testArticles);
-  //return { testUsers, testArticles, testComments };
-  return { testUsers };
+  return { testUsers, testClients, testTattoos, testEvents };
+  // return { testUsers };
 }
 
 function cleanTables(db) {
-  return db.transaction(
-    trx =>
-      trx
-        //   .raw(
-        //     `TRUNCATE
-        //     blogful_articles,
-        //     blogful_users,
-        //     blogful_comments
-        //   `
-        //   )
-        .raw(`TRUNCATE tattoo_users`)
-        .then(() =>
-          Promise.all([
-            trx.raw(
-              `ALTER SEQUENCE tattoo_users_id_seq minvalue 0 START WITH 1`
-            ),
-            trx.raw(`SELECT setval('tattoo_users_id_seq', 0)`)
-          ])
-        )
-    //   .then(() =>
-    //     Promise.all([
-    //       trx.raw(
-    //         `ALTER SEQUENCE blogful_articles_id_seq minvalue 0 START WITH 1`
-    //       ),
-    //       trx.raw(
-    //         `ALTER SEQUENCE blogful_users_id_seq minvalue 0 START WITH 1`
-    //       ),
-    //       trx.raw(
-    //         `ALTER SEQUENCE blogful_comments_id_seq minvalue 0 START WITH 1`
-    //       ),
-    //       trx.raw(`SELECT setval('blogful_articles_id_seq', 0)`),
-    //       trx.raw(`SELECT setval('blogful_users_id_seq', 0)`),
-    //       trx.raw(`SELECT setval('blogful_comments_id_seq', 0)`)
-    //     ])
-    //   )
+  return db.transaction(trx =>
+    trx
+      .raw(
+        `TRUNCATE
+             tattoo_users,
+             clients,
+             tattoos,
+             events
+           `
+      )
+      .then(() =>
+        Promise.all([
+          trx.raw(`ALTER SEQUENCE tattoo_users_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE clients_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE tattoos_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE events_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`SELECT setval('tattoo_users_id_seq', 0)`),
+          trx.raw(`SELECT setval('clients_id_seq', 0)`),
+          trx.raw(`SELECT setval('tattoos_id_seq', 0)`),
+          trx.raw(`SELECT setval('events_id_seq', 0)`)
+        ])
+      )
   );
 }
 
@@ -265,6 +255,7 @@ function seedUsers(db, users) {
     );
 }
 
+function seedClients(db, clients) {}
 // function seedArticlesTables(db, users, articles, comments = []) {
 //   // use a transaction to group the queries and auto rollback on any failure
 //   return db.transaction(async trx => {
@@ -285,7 +276,7 @@ function seedUsers(db, users) {
 // }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-  const token = jwt.sign({ user_id: user.id }, secret, {
+  const token = jwt.sign({ id: user.id }, secret, {
     subject: user.user_name,
     algorithm: "HS256"
   });
@@ -317,6 +308,9 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 module.exports = {
   makeTattoosFixtures,
   makeUsersArray,
+  makeClientsArray,
+  makeTattoosArray,
+  makeEventsArray,
   cleanTables,
   makeAuthHeader,
   seedUsers

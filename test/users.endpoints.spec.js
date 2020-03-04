@@ -4,7 +4,7 @@ const app = require("../src/app");
 const helpers = require("./test-helpers");
 const AuthService = require("../src/auth/auth-service");
 
-describe.only("Users Endpoints", function() {
+describe("Users Endpoints", function() {
   let db;
 
   const { testUsers } = helpers.makeTattoosFixtures();
