@@ -2,6 +2,7 @@ const knex = require("knex");
 const bcrypt = require("bcryptjs");
 const app = require("../src/app");
 const helpers = require("./test-helpers");
+const AuthService = require("../src/auth/auth-service");
 
 describe.only("Users Endpoints", function() {
   let db;
@@ -33,7 +34,6 @@ describe.only("Users Endpoints", function() {
           user_name: "test user_name",
           password: "test password",
           full_name: "test full_name"
-          // nickname: "test nickname"
         };
 
         it(`responds with 400 required error when '${field}' is missing`, () => {
@@ -123,19 +123,26 @@ describe.only("Users Endpoints", function() {
               password: "11AAaa!!",
               full_name: "test full_name"
             };
+            const sub = newUser.user_name;
+            const payload = { id: newUser.id };
+            let jwt = AuthService.createJwt(sub, payload);
+
             return supertest(app)
               .post("/api/users")
               .send(newUser)
               .expect(201)
               .expect(res => {
-                expect(res.body).to.have.property("id");
-                expect(res.body.user_name).to.eql(newUser.user_name);
-                expect(res.body.full_name).to.eql(newUser.full_name);
+                expect(res.body.user).to.have.property("id");
+                expect(res.body.user).to.have.property("full_name");
+                expect(res.body.user).to.have.property("user_name");
+                expect(res.body).to.have.property("authToken");
+                //expect(res.body.authToken).to.eql(jwt);
+                //expect(res.body.full_name).to.eql(newUser.full_name);
                 // expect(res.body.nickname).to.eql("");
                 expect(res.body).to.not.have.property("password");
-                expect(res.headers.location).to.eql(
-                  `/api/users/${res.body.id}`
-                );
+                // expect(res.headers.location).to.eql(
+                //   `/api/users/${res.body.id}`
+                // );
                 // const expectedDate = new Date().toLocaleString("en", {
                 //   timeZone: "UTC"
                 // });

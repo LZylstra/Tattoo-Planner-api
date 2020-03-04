@@ -1,7 +1,24 @@
 const TattoosService = {
-  //might remove this later after get auth working better
   getAllTattoos(db) {
     return db.select("*").from("tattoos");
+  },
+  getAllUserTattoos(db, id) {
+    return db
+      .from("tattoos AS t")
+      .select(
+        "t.id",
+        "t.title",
+        "t.position",
+        "t.info",
+        "t.curr_status",
+        "t.tattoo_rating",
+        "t.client",
+        ...clientFields,
+        ...userFields
+      )
+      .leftJoin("clients AS c", "t.client", "c.id")
+      .leftJoin("tattoo_users AS usr", "c.artist", "usr.id")
+      .where("usr.id", id);
   },
   getByClientId(db, id) {
     return db
@@ -101,4 +118,9 @@ const tattooFields = [
   "t.client AS tattoo:client"
 ];
 
+const userFields = [
+  "usr.id AS user:id",
+  "usr.user_name AS user:user_name",
+  "usr.full_name AS user:full_name"
+];
 module.exports = TattoosService;

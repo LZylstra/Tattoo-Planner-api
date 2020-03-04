@@ -2,7 +2,8 @@ const express = require("express");
 const path = require("path");
 const xss = require("xss");
 const UsersService = require("./users-service");
-
+const { requireAuth } = require("../middleware/jwt-auth");
+const AuthService = require("../auth/auth-service");
 const usersRouter = express.Router();
 const jsonBodyParser = express.json();
 
@@ -31,6 +32,7 @@ usersRouter
 
 usersRouter.post("/", jsonBodyParser, (req, res, next) => {
   const { password, user_name, full_name } = req.body;
+  // console.log(user_name);
   for (const field of ["full_name", "user_name", "password"])
     if (!req.body[field])
       return res.status(400).json({
@@ -49,18 +51,24 @@ usersRouter.post("/", jsonBodyParser, (req, res, next) => {
           password: hashedPassword,
           full_name
         };
-
+        //console.log(newUser);
         return UsersService.insertUser(req.app.get("db"), newUser).then(
-          user => {
-            const sub = user.username;
-            const payload = { user_id: user.id };
+          newUser => {
+            const sub = newUser.user_name;
+            // console.log(newUser.user_name);
+            const payload = { id: newUser.id };
             let jwt = AuthService.createJwt(sub, payload);
 
+            let user = {
+              user: UsersService.serializeUser(newUser),
+              authToken: jwt
+            };
+            // console.log(user);
             res
               .status(201)
               // .location(path.posix.join(req.originalUrl, `/${user.id}`))
               //.json(UsersService.serializeUser(user));
-              .json(jwt);
+              .json(user);
           }
         );
       });

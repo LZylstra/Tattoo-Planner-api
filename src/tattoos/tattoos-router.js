@@ -28,14 +28,32 @@ const serializeClient = client => ({
 });
 
 TattoosRouter.route("/")
-  //.all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
-    TattoosService.getAllTattoos(req.app.get("db"))
+    ClientsService.getAllTattoos(req.app.get("db"))
+      .then(clients => {
+        res.json(clients.map(serializeClient));
+      })
+      .catch(next);
+  });
+// Get all tattoos for the logged in user
+TattoosRouter.route("/artist/:artistId")
+  .all(requireAuth)
+  .get((req, res, next) => {
+    const { artistId } = req.params;
+    TattoosService.getAllUserTattoos(req.app.get("db"), artistId)
       .then(tattoos => {
+        if (!tattoos) {
+          logger.error(`Client with Artist id ${artistId} not found.`);
+          return res.status(404).json({
+            error: { message: `Client not found` }
+          });
+        }
         res.json(tattoos.map(serializeTattoo));
       })
       .catch(next);
   })
+
   .post(bodyParser, (req, res, next) => {
     const {
       title,
@@ -73,11 +91,11 @@ TattoosRouter.route("/")
       }
     }
     TattoosService.insertTattoo(req.app.get("db"), newTattoo)
-      .then(tattoo => {
+      .then(newTattoo => {
         res
           .status(201)
           .location(`/`)
-          .json(serializeTattoo(tattoo));
+          .json(serializeTattoo(newTattoo));
       })
       .catch(next);
   });
@@ -104,6 +122,7 @@ TattoosRouter.route("/:id")
   .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
+    //console.log(id);
     TattoosService.getById(req.app.get("db"), id)
       .then(tattoo => {
         if (!tattoo) {

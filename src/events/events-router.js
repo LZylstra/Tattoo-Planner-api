@@ -90,6 +90,22 @@ EventsRouter.route("/")
       })
       .catch(next);
   });
+EventsRouter.route("/artist/:artistId")
+  .all(requireAuth)
+  .get((req, res, next) => {
+    const { artistId } = req.params;
+    EventsService.getAllUserEvents(req.app.get("db"), artistId)
+      .then(events => {
+        if (!events) {
+          logger.error(`Event with Artist id ${artistId} not found.`);
+          return res.status(404).json({
+            error: { message: `Event not found` }
+          });
+        }
+        res.json(events.map(serializeEvent));
+      })
+      .catch(next);
+  });
 
 EventsRouter.route("/:id")
   .all(requireAuth)

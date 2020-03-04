@@ -29,9 +29,8 @@ const serializeClientsTattoo = tattoo => ({
   client: tattoo.client
 });
 
-//not sure i need this route might delete it later when auth implemented fully
 ClientsRouter.route("/")
-  //.all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
     ClientsService.getAllClients(req.app.get("db"))
       .then(clients => {
@@ -91,7 +90,7 @@ ClientsRouter.route("/")
 
 //gets all clients for a particular artist id
 ClientsRouter.route("/artist/:artistId/")
-  //.all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
     const { artistId } = req.params;
     ClientsService.getByArtistId(req.app.get("db"), artistId)
@@ -108,7 +107,7 @@ ClientsRouter.route("/artist/:artistId/")
   });
 
 ClientsRouter.route("/:id")
-  //.all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
     ClientsService.getById(req.app.get("db"), id)
@@ -134,7 +133,7 @@ ClientsRouter.route("/:id")
   });
 
 ClientsRouter.route("/:id/tattoos")
-  //.all(requireAuth)
+  .all(requireAuth)
   // .all(checkClientExists)
   .get((req, res, next) => {
     ClientsService.getClientsTattoos(req.app.get("db"), req.params.id)
