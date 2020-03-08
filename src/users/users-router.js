@@ -59,12 +59,16 @@ usersRouter.post("/", jsonBodyParser, (req, res, next) => {
             const payload = { id: newUser.id };
             let jwt = AuthService.createJwt(sub, payload);
 
-            let user = {
-              user: UsersService.serializeUser(newUser),
-              authToken: jwt
-            };
+            // let user = {
+            //   user: UsersService.serializeUser(newUser),
+            //   authToken: jwt
+            // };
             // console.log(user);
             res
+              .send({
+                authToken: jwt,
+                user: UsersService.serializeUser(newUser)
+              })
               .status(201)
               // .location(path.posix.join(req.originalUrl, `/${user.id}`))
               //.json(UsersService.serializeUser(user));
