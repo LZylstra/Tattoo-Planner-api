@@ -64,15 +64,14 @@ usersRouter.post("/", jsonBodyParser, (req, res, next) => {
             //   authToken: jwt
             // };
             // console.log(user);
-            res
-              .send({
-                authToken: jwt,
-                user: UsersService.serializeUser(newUser)
-              })
-              .status(201)
-              // .location(path.posix.join(req.originalUrl, `/${user.id}`))
-              //.json(UsersService.serializeUser(user));
-              .json(user);
+            res.status(201).send({
+              authToken: jwt,
+              user: UsersService.serializeUser(newUser)
+            });
+
+            // .location(path.posix.join(req.originalUrl, `/${user.id}`))
+            //.json(UsersService.serializeUser(user));
+            // .json(user);
           }
         );
       });

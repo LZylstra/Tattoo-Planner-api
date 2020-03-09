@@ -1,7 +1,6 @@
 const xss = require("xss");
 
 const ClientsService = {
-  //might remove this later after get auth working better
   getAllClients(db) {
     return db.select("*").from("clients");
   },

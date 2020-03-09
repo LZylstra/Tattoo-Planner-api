@@ -32,7 +32,7 @@ const serializeEvent = event => ({
 });
 
 EventsRouter.route("/")
-  .all(requireAuth)
+  // .all(requireAuth)
   .get((req, res, next) => {
     EventsService.getAllEvents(req.app.get("db"))
       .then(events => {

@@ -120,7 +120,7 @@ function makeEventsArray(tattoos) {
       tattoo: tattoos[1].id
     },
     {
-      id: 2,
+      id: 3,
       title: "Event2",
       description: "test description",
       eventdate: new Date("2029-01-22T16:28:32.615Z"),
@@ -133,7 +133,46 @@ function makeEventsArray(tattoos) {
     }
   ];
 }
-function makeExpectedClient() {}
+
+function makeExpectedTattoo(tattoos) {
+  let tattoo = {
+    id: tattoos.id,
+    title: tattoos.title,
+    position: tattoos.position,
+    info: tattoos.info,
+    curr_status: tattoos.curr_status,
+    tattoo_rating: tattoos.tattoo_rating,
+    client: tattoos.client
+  };
+  // console.log(tattoo);
+  return tattoo;
+}
+function makeExpectedClient(client) {
+  return {
+    id: client.id,
+    full_name: client.full_name,
+    phone: client.phone,
+    email: client.email,
+    client_rating: client.client_rating,
+    artist: client.artist
+  };
+}
+
+function makeExpectedEvent(event) {
+  return {
+    id: event.id,
+    title: event.title,
+    description: event.description,
+    eventdate: event.eventdate,
+    start_time: event.start_time,
+    end_time: event.end_time,
+    in_person: event.in_person,
+    curr_status: event.curr_status,
+    all_day: event.all_day,
+    tattoo: event.tattoo
+  };
+}
+
 // function makeExpectedArticle(users, article, comments = []) {
 //   const author = users.find(user => user.id === article.author_id);
 
@@ -255,25 +294,36 @@ function seedUsers(db, users) {
     );
 }
 
-function seedClients(db, clients) {}
-// function seedArticlesTables(db, users, articles, comments = []) {
-//   // use a transaction to group the queries and auto rollback on any failure
-//   return db.transaction(async trx => {
-//     await seedUsers(trx, users);
-//     await trx.into("blogful_articles").insert(articles);
-//     // update the auto sequence to match the forced id values
-//     await trx.raw(`SELECT setval('blogful_articles_id_seq', ?)`, [
-//       articles[articles.length - 1].id
-//     ]);
-//     // only insert comments if there are some, also update the sequence counter
-//     if (comments.length) {
-//       await trx.into("blogful_comments").insert(comments);
-//       await trx.raw(`SELECT setval('blogful_comments_id_seq', ?)`, [
-//         comments[comments.length - 1].id
-//       ]);
-//     }
-//   });
-// }
+function seedClients(db, users, clients) {
+  return db.transaction(async trx => {
+    await seedUsers(trx, users);
+    await trx.into("clients").insert(clients);
+    await trx.raw(`SELECT setval('clients_id_seq', ?)`, [
+      clients[clients.length - 1].id
+    ]);
+  });
+}
+
+function seedTattoos(db, users, clients, tattoos) {
+  return db.transaction(async trx => {
+    await seedClients(trx, users, clients);
+    await trx.into("tattoos").insert(tattoos);
+    await trx.raw(`SELECT setval('tattoos_id_seq', ?)`, [
+      tattoos[tattoos.length - 1].id
+    ]);
+  });
+}
+
+function seedEvents(db, users, clients, tattoos, events) {
+  console.log(events);
+  return db.transaction(async trx => {
+    await seedTattoos(trx, users, clients, tattoos);
+    await trx.into("events").insert(events);
+    await trx.raw(`SELECT setval('events_id_seq', ?)`, [
+      events[events.length - 1].id
+    ]);
+  });
+}
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ id: user.id }, secret, {
@@ -313,5 +363,11 @@ module.exports = {
   makeEventsArray,
   cleanTables,
   makeAuthHeader,
-  seedUsers
+  seedUsers,
+  seedClients,
+  seedTattoos,
+  seedEvents,
+  makeExpectedClient,
+  makeExpectedTattoo,
+  makeExpectedEvent
 };
