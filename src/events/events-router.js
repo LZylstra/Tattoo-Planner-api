@@ -96,10 +96,10 @@ EventsRouter.route("/artist/:artistId")
     const { artistId } = req.params;
     EventsService.getAllUserEvents(req.app.get("db"), artistId)
       .then(events => {
-        if (!events) {
+        if (events.length == 0) {
           logger.error(`Event with Artist id ${artistId} not found.`);
           return res.status(404).json({
-            error: { message: `Event not found` }
+            error: { message: `Event Not Found` }
           });
         }
         res.json(events.map(serializeEvent));
@@ -158,7 +158,7 @@ EventsRouter.route("/tattoo/:id")
     const { id } = req.params;
     EventsService.getEventsByTattoo(req.app.get("db"), id)
       .then(events => {
-        if (!events) {
+        if (events.length == 0) {
           logger.error(`Events for tattoo id ${id} not found.`);
           return res.status(404).json({
             error: { message: `Events For Tattoo Not Found` }

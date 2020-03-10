@@ -2,7 +2,7 @@ const xss = require("xss");
 
 const EventsService = {
   getAllEvents(db) {
-    return db.select("*").from("tattoos");
+    return db.select("*").from("events");
   },
   getAllUserEvents(db, id) {
     return db

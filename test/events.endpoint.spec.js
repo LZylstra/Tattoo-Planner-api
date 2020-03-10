@@ -1,9 +1,8 @@
 const knex = require("knex");
 const app = require("../src/app");
 const helpers = require("./test-helpers");
-const bcrypt = require("bcryptjs");
 
-describe.only("Clients Endpoints", function() {
+describe.only("Events Endpoints", function() {
   let db;
 
   const {
@@ -43,7 +42,8 @@ describe.only("Clients Endpoints", function() {
         helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
       );
 
-      it("responds with 200 and all of the events", () => {
+      //unable to test dates on my windows machine so this is skipped
+      it.skip("responds with 200 and all of the events", () => {
         let expectedEvents = [];
         testEvents.map(event => {
           expectedEvents.push(helpers.makeExpectedEvent(event));
@@ -56,117 +56,229 @@ describe.only("Clients Endpoints", function() {
       });
     });
 
-    // context(`POST `, () => {
-    //   beforeEach("insert clients", () =>
-    //     helpers.seedClients(db, testUsers, testClients)
-    //   );
+    context(`POST `, () => {
+      beforeEach("insert events", () =>
+        helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
+      );
 
-    //   it("responds with 201 and the new client", () => {
-    //     const newClient = {
-    //       full_name: "Test Name",
-    //       phone: "123-456-7890",
-    //       email: "testemail@email.com",
-    //       client_rating: 3,
-    //       artist: 1
-    //     };
-    //     return supertest(app)
-    //       .post("/api/clients")
-    //       .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-    //       .send(newClient)
-    //       .expect(201)
-    //       .expect(res => {
-    //         expect(res.body).to.have.property("full_name");
-    //         expect(res.body).to.have.property("client_rating");
-    //         expect(res.body).to.have.property("artist");
-    //         expect(res.body.full_name).to.eql(newClient.full_name);
-    //         expect(res.body.phone).to.eql(newClient.phone);
-    //         expect(res.body.email).to.eql(newClient.email);
-    //         expect(res.body.client_rating).to.eql(newClient.client_rating);
-    //         expect(res.body.artist).to.eql(newClient.artist);
-    //       })
-    //       .expect(res => {
-    //         db.from("clients")
-    //           .select("*")
-    //           .where({ id: res.body.id })
-    //           .first()
-    //           .then(row => {
-    //             expect(row.full_name).to.eql(newClient.full_name);
-    //             expect(row.phone).to.eql(newClient.phone);
-    //             expect(row.email).to.eql(newClient.email);
-    //             expect(row.client_rating).to.eql(newClient.client_rating);
-    //             expect(row.artist).to.eql(newClient.artist);
-    //           });
-    //       });
-    //   });
-    // });
+      it("responds with 201 and the new event", () => {
+        const newEvent = {
+          title: "Test Event",
+          description: "test event description",
+          eventdate: "2029-01-22T16:28:32.615Z",
+          start_time: "12:34:00",
+          end_time: "01:32:00",
+          in_person: true,
+          curr_status: "New",
+          all_day: false,
+          tattoo: 1
+        };
+        return supertest(app)
+          .post("/api/events")
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .send(newEvent)
+          .expect(201)
+          .expect(res => {
+            expect(res.body).to.have.property("title");
+            expect(res.body).to.have.property("eventdate");
+            expect(res.body).to.have.property("in_person");
+            expect(res.body).to.have.property("curr_status");
+            expect(res.body).to.have.property("all_day");
+            expect(res.body).to.have.property("tattoo");
+            expect(res.body.title).to.eql(newEvent.title);
+            expect(res.body.description).to.eql(newEvent.description);
+            // expect(res.body.eventdate).to.eql(newEvent.eventdate);
+            expect(res.body.start_time).to.eql(newEvent.start_time);
+            expect(res.body.end_time).to.eql(newEvent.end_time);
+            expect(res.body.in_person).to.eql(newEvent.in_person);
+            expect(res.body.curr_status).to.eql(newEvent.curr_status);
+            expect(res.body.all_day).to.eql(newEvent.all_day);
+            expect(res.body.tattoo).to.eql(newEvent.tattoo);
+          })
+          .expect(res => {
+            db.from("events")
+              .select("*")
+              .where({ id: res.body.id })
+              .first()
+              .then(row => {
+                expect(row.title).to.eql(newEvent.title);
+                expect(row.description).to.eql(newEvent.description);
+                // expect(row.eventdate).to.eql(newEvent.eventdate);
+                expect(row.start_time).to.eql(newEvent.start_time);
+                expect(row.end_time).to.eql(newEvent.end_time);
+                expect(res.body.in_person).to.eql(newEvent.in_person);
+                expect(res.body.curr_status).to.eql(newEvent.curr_status);
+                expect(res.body.all_day).to.eql(newEvent.all_day);
+                expect(res.body.tattoo).to.eql(newEvent.tattoo);
+              });
+          });
+      });
+    });
   });
 
-  //   describe(`Route /api/clients/:id`, () => {
-  //     before("seed users", () => helpers.seedUsers(db, testUsers));
-  //     context(`Get: Given no matching client id`, () => {
-  //       it(`responds with 404`, () => {
-  //         const clientId = 12345;
-  //         const expected = {
-  //           error: { message: `Client Not Found` }
-  //         };
-  //         return supertest(app)
-  //           .get(`/api/clients/${clientId}`)
-  //           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-  //           .expect(404, expected);
-  //       });
-  //     });
-  //     context(`GET: Given there is a matching id`, () => {
-  //       beforeEach("insert clients", () =>
-  //         helpers.seedClients(db, testUsers, testClients)
-  //       );
-  //       it("responds with 200 and the matching tattoo", () => {
-  //         let expectedClient = {
-  //           id: 1,
-  //           full_name: "Test Name",
-  //           phone: "123-456-7890",
-  //           email: "email@email.com",
-  //           client_rating: 2,
-  //           artist: 1
-  //         };
+  describe(`Route /api/events/:id`, () => {
+    beforeEach("insert events", () =>
+      helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
+    );
+    context(`Get: Given no matching event id`, () => {
+      it(`responds with 404`, () => {
+        const eventId = 12345;
+        const expected = {
+          error: { message: `Event Not Found` }
+        };
+        return supertest(app)
+          .get(`/api/events/${eventId}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, expected);
+      });
+    });
 
-  //         return supertest(app)
-  //           .get("/api/clients/1")
-  //           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-  //           .expect(200, expectedClient);
-  //       });
-  //     });
-  //   });
-  //   describe(`Route /api/clients/artist/:artistId`, () => {
-  //     context(`GET: Given there is a matching artist id`, () => {
-  //       beforeEach("insert clients", () =>
-  //         helpers.seedClients(db, testUsers, testClients)
-  //       );
-  //       it("responds with 200 and the clients for that artist id", () => {
-  //         let expectedClient = [
-  //           {
-  //             id: 1,
-  //             full_name: "Test Name",
-  //             phone: "123-456-7890",
-  //             email: "email@email.com",
-  //             client_rating: 2,
-  //             artist: 1
-  //           }
-  //         ];
-  //         return supertest(app)
-  //           .get("/api/clients/artist/1")
-  //           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-  //           .expect(200, expectedClient);
-  //       });
-  //     });
-  //   });
-  //   describe(`Route /api/clients/:id/tattoos`, () => {
-  //     context(`GET: Given there is a matching id that has tattoos`, () => {
-  //       beforeEach("insert tattoos", () =>
-  //         helpers.seedTattoos(db, testUsers, testClients, testTattoos)
-  //       );
-  //       it("responds with 200 and the tattoos", () => {
+    context(`GET: Given there is a matching id`, () => {
+      //   beforeEach("insert events", () =>
+      //     helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
+      //   );
 
-  //       });
-  //     });
-  //   });
+      it("responds with 200 and the matching event", () => {
+        let expectedEvent = {
+          id: 1,
+          title: "Event1",
+          description: "test description",
+          eventdate: "2029-01-22T16:28:32.615Z",
+          start_time: "12:34:00",
+          end_time: "01:32:00",
+          in_person: true,
+          curr_status: "Upcoming",
+          all_day: false,
+          tattoo: 1
+        };
+
+        return supertest(app)
+          .get("/api/events/1")
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(200, expectedEvent);
+      });
+    });
+  });
+
+  describe(`Route /api/events/artist/:artistId`, () => {
+    beforeEach("insert events", () =>
+      helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
+    );
+
+    context(`Get: Given no matching artist id`, () => {
+      it(`responds with 404`, () => {
+        const artistId = 1234;
+        const expected = {
+          error: { message: `Event Not Found` }
+        };
+        return supertest(app)
+          .get(`/api/events/artist/${artistId}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, expected);
+      });
+    });
+
+    context(`GET: Given there is a matching artist id`, () => {
+      it("responds with 200 and the matching events", () => {
+        let expectedEvent = [
+          {
+            id: 1,
+            title: "Event1",
+            description: "test description",
+            eventdate: "2029-01-22T16:28:32.615Z",
+            start_time: "12:34:00",
+            end_time: "01:32:00",
+            in_person: true,
+            curr_status: "Upcoming",
+            all_day: false,
+            tattoo: 1
+          }
+        ];
+
+        return supertest(app)
+          .get("/api/events/artist/1")
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(200, expectedEvent);
+      });
+    });
+  });
+  describe(`Route /api/events/:id/tattoo`, () => {
+    beforeEach("insert events", () =>
+      helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
+    );
+
+    context(`Get: Given no matching event id`, () => {
+      it(`responds with 404`, () => {
+        const eventId = 1234;
+        const expected = {
+          error: { message: `Tattoo Event Not Found` }
+        };
+        return supertest(app)
+          .get(`/api/events/${eventId}/tattoo`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, expected);
+      });
+    });
+
+    context(`GET: Given there is a matching event id`, () => {
+      it("responds with 200 and the events tattoos", () => {
+        let expectedTattoo = {
+          id: 1,
+          title: "First test tattoo",
+          position: "Arm",
+          info:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt",
+          curr_status: "In Progress",
+          tattoo_rating: 3,
+          client: 1
+        };
+        return supertest(app)
+          .get("/api/events/1/tattoo")
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(200, expectedTattoo);
+      });
+    });
+  });
+
+  describe(`Route /api/events/tattoo/:id`, () => {
+    beforeEach("insert events", () =>
+      helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
+    );
+
+    context(`Get: Given no matching tattoo id`, () => {
+      it(`responds with 404`, () => {
+        const tattooId = 1234;
+        const expected = {
+          error: { message: `Events For Tattoo Not Found` }
+        };
+        return supertest(app)
+          .get(`/api/events/tattoo/${tattooId}`)
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, expected);
+      });
+    });
+
+    context(`GET: Given there is a matching tattoo id`, () => {
+      it("responds with 200 and the tattoos events", () => {
+        let expectedEvent = [
+          {
+            id: 1,
+            title: "Event1",
+            description: "test description",
+            eventdate: "2029-01-22T16:28:32.615Z",
+            start_time: "12:34:00",
+            end_time: "01:32:00",
+            in_person: true,
+            curr_status: "Upcoming",
+            all_day: false,
+            tattoo: 1
+          }
+        ];
+        return supertest(app)
+          .get("/api/events/tattoo/1")
+          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+          .expect(200, expectedEvent);
+      });
+    });
+  });
 });

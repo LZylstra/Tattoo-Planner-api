@@ -99,7 +99,7 @@ function makeEventsArray(tattoos) {
       id: 1,
       title: "Event1",
       description: "test description",
-      eventdate: new Date("2029-01-22T16:28:32.615Z"),
+      eventdate: "2029-01-22T16:28:32.615Z",
       start_time: "12:34:00",
       end_time: "01:32:00",
       in_person: true,
@@ -111,7 +111,7 @@ function makeEventsArray(tattoos) {
       id: 2,
       title: "Event2",
       description: "test description",
-      eventdate: new Date("2029-01-22T16:28:32.615Z"),
+      eventdate: "2029-01-22T16:28:32.615Z",
       start_time: "12:34:00",
       end_time: "01:32:00",
       in_person: true,
@@ -123,7 +123,7 @@ function makeEventsArray(tattoos) {
       id: 3,
       title: "Event2",
       description: "test description",
-      eventdate: new Date("2029-01-22T16:28:32.615Z"),
+      eventdate: "2029-01-22T16:28:32.615Z",
       start_time: "12:34:00",
       end_time: "01:32:00",
       in_person: true,
@@ -163,7 +163,7 @@ function makeExpectedEvent(event) {
     id: event.id,
     title: event.title,
     description: event.description,
-    eventdate: event.eventdate,
+    eventdate: event.eventdate.toLocaleString(),
     start_time: event.start_time,
     end_time: event.end_time,
     in_person: event.in_person,
@@ -315,7 +315,7 @@ function seedTattoos(db, users, clients, tattoos) {
 }
 
 function seedEvents(db, users, clients, tattoos, events) {
-  console.log(events);
+  // console.log(events);
   return db.transaction(async trx => {
     await seedTattoos(trx, users, clients, tattoos);
     await trx.into("events").insert(events);
