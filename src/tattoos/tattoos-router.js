@@ -2,7 +2,6 @@ const express = require("express");
 const logger = require("../middleware/logger");
 const xss = require("xss");
 const TattoosService = require("./tattoos-service");
-const { check, validationResult } = require("express-validator");
 
 const TattoosRouter = express.Router();
 const bodyParser = express.json();
@@ -36,6 +35,7 @@ TattoosRouter.route("/")
       })
       .catch(next);
   });
+
 // Get all tattoos for the logged in user
 TattoosRouter.route("/artist/:artistId")
   .all(requireAuth)
@@ -122,7 +122,6 @@ TattoosRouter.route("/:id")
   .all(requireAuth)
   .get((req, res, next) => {
     const { id } = req.params;
-    //console.log(id);
     TattoosService.getById(req.app.get("db"), id)
       .then(tattoo => {
         if (!tattoo) {

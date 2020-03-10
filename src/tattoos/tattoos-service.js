@@ -36,22 +36,6 @@ const TattoosService = {
       .leftJoin("clients AS c", "t.client", "c.id")
       .where("c.id", id);
   },
-  // getByClientandId(db, id) {
-  //   return db
-  //     .from("tattoos AS t")
-  //     .select(
-  //       "t.id",
-  //       "t.title",
-  //       "t.position",
-  //       "t.info",
-  //       "t.curr_status",
-  //       "t.tattoo_rating",
-  //       "t.client",
-  //       ...clientFields
-  //     )
-  //     .leftJoin("clients AS c", "t.client", "c.id")
-  //     .where("t.id", id);
-  // },
   getClientByTattooId(db, tattoo_id) {
     return db
       .from("clients AS c")
@@ -94,10 +78,6 @@ const TattoosService = {
       .where({ id })
       .update(newTattooFields);
   }
-  // getClients(db, cid){
-  //   return db('tattoos')
-  //   .
-  // }
 };
 const clientFields = [
   "c.id AS clients:id",

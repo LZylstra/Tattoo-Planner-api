@@ -24,10 +24,6 @@ app.use("/api/clients", clientsRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
-
 app.use(errorHandler);
 
 module.exports = app;

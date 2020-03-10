@@ -2,7 +2,7 @@ const knex = require("knex");
 const app = require("../src/app");
 const helpers = require("./test-helpers");
 
-describe.only("Events Endpoints", function() {
+describe("Events Endpoints", function() {
   let db;
 
   const {
@@ -42,8 +42,7 @@ describe.only("Events Endpoints", function() {
         helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
       );
 
-      //unable to test dates on my windows machine so this is skipped
-      it.skip("responds with 200 and all of the events", () => {
+      it("responds with 200 and all of the events", () => {
         let expectedEvents = [];
         testEvents.map(event => {
           expectedEvents.push(helpers.makeExpectedEvent(event));
@@ -87,7 +86,7 @@ describe.only("Events Endpoints", function() {
             expect(res.body).to.have.property("tattoo");
             expect(res.body.title).to.eql(newEvent.title);
             expect(res.body.description).to.eql(newEvent.description);
-            // expect(res.body.eventdate).to.eql(newEvent.eventdate);
+            expect(res.body.eventdate).to.eql(newEvent.eventdate);
             expect(res.body.start_time).to.eql(newEvent.start_time);
             expect(res.body.end_time).to.eql(newEvent.end_time);
             expect(res.body.in_person).to.eql(newEvent.in_person);
@@ -103,7 +102,7 @@ describe.only("Events Endpoints", function() {
               .then(row => {
                 expect(row.title).to.eql(newEvent.title);
                 expect(row.description).to.eql(newEvent.description);
-                // expect(row.eventdate).to.eql(newEvent.eventdate);
+                expect(row.eventdate).to.eql(newEvent.eventdate);
                 expect(row.start_time).to.eql(newEvent.start_time);
                 expect(row.end_time).to.eql(newEvent.end_time);
                 expect(res.body.in_person).to.eql(newEvent.in_person);
@@ -134,10 +133,6 @@ describe.only("Events Endpoints", function() {
     });
 
     context(`GET: Given there is a matching id`, () => {
-      //   beforeEach("insert events", () =>
-      //     helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
-      //   );
-
       it("responds with 200 and the matching event", () => {
         let expectedEvent = {
           id: 1,
@@ -164,19 +159,6 @@ describe.only("Events Endpoints", function() {
     beforeEach("insert events", () =>
       helpers.seedEvents(db, testUsers, testClients, testTattoos, testEvents)
     );
-
-    context(`Get: Given no matching artist id`, () => {
-      it(`responds with 404`, () => {
-        const artistId = 1234;
-        const expected = {
-          error: { message: `Event Not Found` }
-        };
-        return supertest(app)
-          .get(`/api/events/artist/${artistId}`)
-          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-          .expect(404, expected);
-      });
-    });
 
     context(`GET: Given there is a matching artist id`, () => {
       it("responds with 200 and the matching events", () => {

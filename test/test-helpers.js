@@ -144,7 +144,7 @@ function makeExpectedTattoo(tattoos) {
     tattoo_rating: tattoos.tattoo_rating,
     client: tattoos.client
   };
-  // console.log(tattoo);
+
   return tattoo;
 }
 function makeExpectedClient(client) {
@@ -173,83 +173,12 @@ function makeExpectedEvent(event) {
   };
 }
 
-// function makeExpectedArticle(users, article, comments = []) {
-//   const author = users.find(user => user.id === article.author_id);
-
-//   const number_of_comments = comments.filter(
-//     comment => comment.article_id === article.id
-//   ).length;
-
-//   return {
-//     id: article.id,
-//     style: article.style,
-//     title: article.title,
-//     content: article.content,
-//     date_created: article.date_created.toISOString(),
-//     number_of_comments,
-//     author: {
-//       id: author.id,
-//       user_name: author.user_name,
-//       full_name: author.full_name,
-//       nickname: author.nickname,
-//       date_created: author.date_created.toISOString(),
-//       date_modified: author.date_modified || null
-//     }
-//   };
-// }
-
-// function makeExpectedArticleComments(users, articleId, comments) {
-//   const expectedComments = comments.filter(
-//     comment => comment.article_id === articleId
-//   );
-
-//   return expectedComments.map(comment => {
-//     const commentUser = users.find(user => user.id === comment.user_id);
-//     return {
-//       id: comment.id,
-//       text: comment.text,
-//       date_created: comment.date_created.toISOString(),
-//       user: {
-//         id: commentUser.id,
-//         user_name: commentUser.user_name,
-//         full_name: commentUser.full_name,
-//         nickname: commentUser.nickname,
-//         date_created: commentUser.date_created.toISOString(),
-//         date_modified: commentUser.date_modified || null
-//       }
-//     };
-//   });
-// }
-
-// function makeMaliciousArticle(user) {
-//   const maliciousArticle = {
-//     id: 911,
-//     style: "How-to",
-//     date_created: new Date(),
-//     title: 'Naughty naughty very naughty <script>alert("xss");</script>',
-//     author_id: user.id,
-//     content: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
-//   };
-//   const expectedArticle = {
-//     ...makeExpectedArticle([user], maliciousArticle),
-//     title:
-//       'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
-//     content: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
-//   };
-//   return {
-//     maliciousArticle,
-//     expectedArticle
-//   };
-// }
-
 function makeTattoosFixtures() {
   const testUsers = makeUsersArray();
   const testClients = makeClientsArray(testUsers);
   const testTattoos = makeTattoosArray(testClients);
   const testEvents = makeEventsArray(testTattoos);
-  // const testComments = makeCommentsArray(testUsers, testArticles);
   return { testUsers, testClients, testTattoos, testEvents };
-  // return { testUsers };
 }
 
 function cleanTables(db) {
@@ -315,7 +244,6 @@ function seedTattoos(db, users, clients, tattoos) {
 }
 
 function seedEvents(db, users, clients, tattoos, events) {
-  // console.log(events);
   return db.transaction(async trx => {
     await seedTattoos(trx, users, clients, tattoos);
     await trx.into("events").insert(events);
@@ -332,28 +260,6 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   });
   return `Bearer ${token}`;
 }
-
-// function seedMaliciousArticle(db, user, article) {
-//   return seedUsers(db, [user]).then(() =>
-//     db.into("blogful_articles").insert([article])
-//   );
-// }
-
-// module.exports = {
-//   makeUsersArray,
-//   makeArticlesArray,
-//   makeExpectedArticle,
-//   makeExpectedArticleComments,
-//   makeMaliciousArticle,
-//   makeCommentsArray,
-
-//   makeArticlesFixtures,
-//   cleanTables,
-//   seedArticlesTables,
-//   seedMaliciousArticle,
-//   makeAuthHeader,
-//   seedUsers
-// };
 
 module.exports = {
   makeTattoosFixtures,

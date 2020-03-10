@@ -8,12 +8,6 @@ const AuthService = {
       .where({ user_name })
       .first();
   },
-  // getUserId(db, user_name){
-  //   return db("tattoo_users")
-  //   .select("tattoo_users.id")
-  //   .where({ user_name })
-  //   .first()
-  // },
   comparePasswords(password, hash) {
     return bcrypt.compare(password, hash);
   },

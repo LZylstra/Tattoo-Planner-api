@@ -46,23 +46,19 @@ const ClientsService = {
       .update(newClientFields);
   },
   getClientsTattoos(db, client_id) {
-    return (
-      db
-        .from("tattoos as t")
-        .select(
-          "t.id",
-          "t.title",
-          "t.position",
-          "t.info",
-          "t.curr_status",
-          "t.tattoo_rating",
-          "t.client"
-          //  ...clientFields,
-        )
-        .where("t.client", client_id)
-        // .leftJoin('clients AS c', 't.client', 'c.artist')
-        .groupBy("t.id")
-    );
+    return db
+      .from("tattoos as t")
+      .select(
+        "t.id",
+        "t.title",
+        "t.position",
+        "t.info",
+        "t.curr_status",
+        "t.tattoo_rating",
+        "t.client"
+      )
+      .where("t.client", client_id)
+      .groupBy("t.id");
   },
 
   serializeClientsTattoos(tattoos) {
@@ -85,15 +81,6 @@ const userFields = [
   "usr.id AS user:id",
   "usr.user_name AS user:user_name",
   "usr.full_name AS user:full_name"
-];
-
-const clientFields = [
-  "c.id AS client:id",
-  "c.full_name AS Client:full_name",
-  "c.phone AS client:phone",
-  "c.email AS client:email",
-  "c.client_rating AS client:client_rating",
-  "c.artist AS client:artist"
 ];
 
 module.exports = ClientsService;

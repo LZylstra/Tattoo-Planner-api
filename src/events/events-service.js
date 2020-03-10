@@ -1,5 +1,3 @@
-const xss = require("xss");
-
 const EventsService = {
   getAllEvents(db) {
     return db.select("*").from("events");
@@ -52,7 +50,6 @@ const EventsService = {
       )
       .leftJoin("tattoos AS t", "t.id", "e.tattoo")
       .where("t.id", tId);
-    //.groupBy("t.id");
   },
   getTattoobyEventId(db, eId) {
     return db

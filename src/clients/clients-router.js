@@ -4,7 +4,6 @@ const express = require("express");
 const logger = require("../middleware/logger");
 const xss = require("xss");
 const ClientsService = require("./clients-service");
-const { check, validationResult } = require("express-validator");
 
 const ClientsRouter = express.Router();
 const bodyParser = express.json();
@@ -17,16 +16,6 @@ const serializeClient = client => ({
   email: xss(client.email),
   client_rating: Number(client.client_rating),
   artist: client.artist
-});
-
-const serializeClientsTattoo = tattoo => ({
-  id: tattoo.id,
-  title: xss(tattoo.title),
-  position: xss(tattoo.position),
-  info: xss(tattoo.info),
-  curr_status: tattoo.curr_status,
-  tattoo_rating: Number(tattoo.tattoo_rating),
-  client: tattoo.client
 });
 
 ClientsRouter.route("/")
@@ -71,12 +60,6 @@ ClientsRouter.route("/")
         error: { message: `Not a valid phone number` }
       });
     }
-
-    //const errors = validationResult(req);
-    //console.log(errors);
-    // if (!errors.isEmpty()) {
-    //   return res.status(422).json({ errors: errors.array() });
-    // }
 
     ClientsService.insertClient(req.app.get("db"), newClient)
       .then(client => {
@@ -134,7 +117,6 @@ ClientsRouter.route("/:id")
 
 ClientsRouter.route("/:id/tattoos")
   .all(requireAuth)
-  // .all(checkClientExists)
   .get((req, res, next) => {
     ClientsService.getClientsTattoos(req.app.get("db"), req.params.id)
       .then(tattoos => {
@@ -142,25 +124,5 @@ ClientsRouter.route("/:id/tattoos")
       })
       .catch(next);
   });
-
-/* async/await syntax for promises */
-async function checkClientExists(req, res, next) {
-  try {
-    const client = await ClientsService.getById(
-      req.app.get("db"),
-      req.params.id
-    );
-
-    if (!client)
-      return res.status(404).json({
-        error: `Client doesn't exist`
-      });
-
-    res.client = client;
-    next();
-  } catch (error) {
-    next(error);
-  }
-}
 
 module.exports = ClientsRouter;

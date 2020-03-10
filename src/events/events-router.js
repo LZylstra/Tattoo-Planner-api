@@ -32,7 +32,7 @@ const serializeEvent = event => ({
 });
 
 EventsRouter.route("/")
-  // .all(requireAuth)
+  .all(requireAuth)
   .get((req, res, next) => {
     EventsService.getAllEvents(req.app.get("db"))
       .then(events => {
@@ -96,7 +96,7 @@ EventsRouter.route("/artist/:artistId")
     const { artistId } = req.params;
     EventsService.getAllUserEvents(req.app.get("db"), artistId)
       .then(events => {
-        if (events.length == 0) {
+        if (!events) {
           logger.error(`Event with Artist id ${artistId} not found.`);
           return res.status(404).json({
             error: { message: `Event Not Found` }
