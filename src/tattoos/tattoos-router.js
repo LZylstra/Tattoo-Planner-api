@@ -141,7 +141,9 @@ TattoosRouter.route("/:id")
       .then(numRowsAffected => {
         res.status(204).end();
       })
-      .catch(next);
+      .catch(err => {
+        console.log(err).next();
+      });
   });
 
 TattoosRouter.route("/:id/client")

@@ -130,7 +130,9 @@ EventsRouter.route("/:id")
       .then(numRowsAffected => {
         res.status(204).end();
       })
-      .catch(next);
+      .catch(err => {
+        console.log(err).next();
+      });
   });
 
 // Get the tattoo that links to given Event id
