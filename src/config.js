@@ -12,6 +12,7 @@ module.exports = {
     "https://tattoo-planner-app.now.sh/",
     "http://localhost:3000",
     "tattoo-planner-app.lindseyzylstra.now.sh",
-    "lindseyzylstra-tattoo-planner.now.sh"
+    "lindseyzylstra-tattoo-planner.now.sh",
+    "tattoo-planner-app.now.sh"
   ]
 };
