@@ -8,5 +8,10 @@ module.exports = {
   JWT_EXPIRY: process.env.JWT_EXPIRY || "15m",
   API_BASE_URL:
     process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api",
-  CLIENT_ORIGIN: "https://tattoo-planner-app.now.sh/"
+  CLIENT_ORIGIN: [
+    "https://tattoo-planner-app.now.sh/",
+    "http://localhost:3000",
+    "tattoo-planner-app.lindseyzylstra.now.sh",
+    "lindseyzylstra-tattoo-planner.now.sh"
+  ]
 };

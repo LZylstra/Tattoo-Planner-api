@@ -2,9 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const errorHandler = require("./middleware/error-handler");
 const cors = require("cors");
-const { CLIENT_ORIGIN } = require("./config");
 const helmet = require("helmet");
-const { NODE_ENV } = require("./config");
+const { NODE_ENV, CLIENT_ORIGIN } = require("./config");
 const authRouter = require("./auth/auth-router");
 const usersRouter = require("./users/users-router");
 const clientsRouter = require("./clients/clients-router");
@@ -20,10 +19,13 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
+//app.use(cors());
 app.use(morgan(morganOption));
 app.use(helmet());
 
-app.use("/api/events", eventsRouter);
+app.options("*", cors());
+
+app.use("/api/events", eventsRouter, cors());
 app.use("/api/tattoos", tattoosRouter);
 app.use("/api/clients", clientsRouter);
 app.use("/api/auth", authRouter);

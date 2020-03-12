@@ -112,3 +112,5 @@
 {"message":"Tattoo with Event id 1234 not found.","level":"error"}
 {"message":"Events for tattoo id 1234 not found.","level":"error"}
 {"message":"Tattoo with id 12345 not found.","level":"error"}
+{"message":"Client with id 12345 not found.","level":"error"}
+{"message":"Tattoo with id 12345 not found.","level":"error"}
